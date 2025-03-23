@@ -19,7 +19,7 @@ export class Login extends LitElement {
             height: 100%;
         }
 
-        .container {
+        .container-login {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -30,14 +30,41 @@ export class Login extends LitElement {
             color: var(--white);
             padding: 2rem;
             box-sizing: border-box; 
+            gap:10rem;
+        }
+
+        .logo{
+            height: 7rem;
         }
 
         .form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 3rem;
             width: 100%;
             max-width: 40rem;  
+        }
+
+        input{
+             height: 5rem;
+             border:none;
+             border-bottom: 1px solid var(--white);
+             background-color: var(--inputBlue);
+             color: var(--white);
+             padding: 0 1rem;
+             outline: none;             
+        }
+
+        button{
+            padding: 2rem;
+            background-color: white;
+            color: var(--principalBlue);
+            border: none;
+        }
+
+        button:hover{
+            background-color: var( --lightGray);
+            cursor: pointer;
         }
 
         .mensajeError {
@@ -100,13 +127,13 @@ export class Login extends LitElement {
             `;
         }
         return html`
-            <section class="container" @submit="${this.enviarFormulario}">
+            <section class="container-login" @submit="${this.enviarFormulario}">
+            <img class="logo" src="./img/bbva-logo.png">
                <form class="form">
-                    <label>Ingresa tu nombre de usuario:</label>
-                    <input type="text" name="user" .value="${this.user}" @input="${this.infoInput}" required>
+                   
+                    <input type="text" name="user" .value="${this.user}" @input="${this.infoInput}" placeholder="Usuario" required>
 
-                    <label>Ingresa tu contraseña:</label>
-                    <input type="password" name="pass" .value="${this.pass}" @input="${this.infoInput}" requiered>
+                    <input type="password" name="pass" .value="${this.pass}" @input="${this.infoInput}" placeholder="Contaseña" requiered>
 
                     <button type="submit"> Ingresar </button>
                </form>
