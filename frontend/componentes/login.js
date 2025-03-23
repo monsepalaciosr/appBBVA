@@ -5,6 +5,8 @@ export class Login extends LitElement {
         super();
         this.user = '';
         this.pass = '';
+        this.tarjetaSeleccionada = null;
+        this.mostrarDetalles = false;
     }
 
     static properties = {
@@ -92,11 +94,16 @@ export class Login extends LitElement {
         mainContainer.appendChild(infoUserElement);
     }
 
+    escucharSalir() {
+        localStorage.removeItem('userId');
+        window.location.reload();  
+    }
+
     render() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             return html`
-                <info-user></info-user>
+                <info-user @salir="${this.salir}"></info-user>
             `;
         }
         return html`

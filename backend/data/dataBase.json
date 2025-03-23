@@ -10,11 +10,17 @@
     "tarjetas": [
         {
             "userId" : 1,
+            "idTarjeta": 1,
             "tipo" : "Débito",
-            "numero" : "3152 2897 0987 3456"
+            "numero" : "3152 2897 0987 3456",
+            "fecha": "12/25",
+            "cvv": "123",
+            "brand": "MasterCard",
+            "saldo": 3000
         },
         {
             "userId": 1,
+            "idTarjeta": 2,
             "tipo" : "Crédito",
             "numero" :"3152 2897 0987 4567"
         }
