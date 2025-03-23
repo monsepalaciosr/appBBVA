@@ -76,7 +76,7 @@ export class Login extends LitElement {
 
             if(usuarioEncontrado) {
                 console.log('Ha iniciado sesión exitosamente');
-                localStorage.setItem('userId', usuarioEncontrado.id);
+                localStorage.setItem('userId', usuarioEncontrado.userId);
                 this.mostrarInfoUser();
             } else {
                 this.mensajeError();
@@ -87,20 +87,16 @@ export class Login extends LitElement {
 
     mostrarInfoUser() {
         const infoUserElement = document.createElement('info-user');
-        document.body.innerHTML = '';
-        document.body.appendChild(infoUserElement);
+        const mainContainer = document.querySelector('main');
+        mainContainer.innerHTML = '';
+        mainContainer.appendChild(infoUserElement);
     }
 
     render() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             return html`
-                <section class="container">
-                    <h2>Bienvenido, Usuario ${userId}</h2>
-                    <div class="tarjetas">
-                        <p>Aquí se mostrarán tus tarjetas.</p>
-                    </div>
-                </section>
+                <info-user></info-user>
             `;
         }
         return html`

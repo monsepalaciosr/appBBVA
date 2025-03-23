@@ -3,7 +3,8 @@
         {
             "userId": 1,
             "user": "monse",
-            "pass": "msp02$"
+            "pass": "msp02$",
+            "nombre": "Monserrat Palacios Rodríguez"
         }
     ],
     "tarjetas": [
