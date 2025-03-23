@@ -54,6 +54,11 @@ export class InfoUser extends LitElement {
         align-items: center;
         justify-content: space-between;
     }
+
+    .label, .balance{
+      font-size:1.2rem;
+    }
+
   `;
 
   async connectedCallback() {
@@ -107,10 +112,15 @@ export class InfoUser extends LitElement {
             (tarjeta) => html`
                             <section class="tarjeta"> 
                                 <p> Tarjeta: ${tarjeta.tipo}</p> 
-                                <section class=data>
+                              <section class=data>
                                 <img class="card-icon" src="./img/card-icon.png"
                                 <p> Número: ${tarjeta.numero} </p>
-                                </section>
+                                  <div>
+                                      <p class="balance">${tarjeta.saldo.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</p>
+                                    <p class="label">Saldo total</p>
+                                  </div>
+                              </section>
+                                
                             </section>
                             `
           )}
