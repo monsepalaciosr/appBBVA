@@ -19,6 +19,7 @@ export class MyCard extends LitElement {
   render() {
     return html`
       <div class="tarjeta">
+        <img src="./img/card-icon.png"
         <h3>${this.tipo}</h3>
         <p>${this.numero}</p>
       </div>
