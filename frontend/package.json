@@ -1,0 +1,24 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Muestra un prototipo del funcionamiento de la app BBVA",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "web-dev-server --node-resolve --open --watch"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "js",
+    "lit"
+  ],
+  "authors": "Monserrat y Jeronimo",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.4.6"
+  }
+}

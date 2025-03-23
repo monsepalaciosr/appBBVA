@@ -1,0 +1,28 @@
+:root {
+    --principalBlue: #0033A0;
+    --lightBlue: #00A9E0;
+    --darkGray: #4D4D4D;
+    --lightGray: #E6E6E6;
+    --white: #fff;
+    --black: #000;
+    --red: #C70101;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; 
+    font-family: 'Roboto', sans-serif;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: min(47rem, 90%);
+}

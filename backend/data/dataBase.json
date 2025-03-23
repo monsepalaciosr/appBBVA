@@ -1,0 +1,21 @@
+{
+    "users": [
+        {
+            "userId": 1,
+            "user": "monse",
+            "pass": "msp02$"
+        }
+    ],
+    "tarjetas": [
+        {
+            "userId" : 1,
+            "tipo" : "Débito",
+            "numero" : "3152 2897 0987 3456"
+        },
+        {
+            "userId": 1,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 0987 4567"
+        }
+    ]
+}
