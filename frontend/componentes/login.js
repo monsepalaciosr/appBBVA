@@ -1,15 +1,20 @@
-import {LitElement, html, css} from 'lit';
+import { LitElement, html, css } from 'lit';
+import './spinner.js'; 
 
 export class Login extends LitElement {
     constructor() {
         super();
         this.user = '';
         this.pass = '';
+        this.tarjetaSeleccionada = null;
+        this.mostrarDetalles = false;
+        this.cargando = false; 
     }
 
     static properties = {
-        user: {type: String},
-        pass: {type: String}
+        user: { type: String },
+        pass: { type: String },
+        cargando: { type: Boolean } 
     };
 
     static styles = css`
@@ -57,7 +62,7 @@ export class Login extends LitElement {
 
         button{
             padding: 2rem;
-            background-color: white;
+            background-color: var(--white);
             color: var(--principalBlue);
             border: none;
         }
@@ -76,7 +81,9 @@ export class Login extends LitElement {
 
     enviarFormulario(event) {
         event.preventDefault();
-        this.successLogin();
+        if (!this.cargando) {
+            this.successLogin();
+        }
     }
 
     infoInput(event) {
@@ -85,31 +92,38 @@ export class Login extends LitElement {
     }
 
     mensajeError() {
-            const contenedor = this.shadowRoot.querySelector('.container');
-            const mensaje = document.createElement('p');
-            mensaje.textContent = 'Usuario o contraseña incorrectos, favor de verificar';
-            mensaje.classList.add('mensajeError');
-            contenedor.appendChild(mensaje);
-            setTimeout(() => {
-                mensaje.remove();
-            }, 3000); 
+        const contenedor = this.shadowRoot.querySelector('.container');
+        const mensaje = document.createElement('p');
+        mensaje.textContent = 'Usuario o contraseña incorrectos, favor de verificar';
+        mensaje.classList.add('mensajeError');
+        contenedor.appendChild(mensaje);
+        setTimeout(() => {
+            mensaje.remove();
+        }, 3000); 
     }
 
     successLogin() {
-       fetch('http://localhost:3000/users')
-       .then(response => response.json())
-        .then(usuarios => {
-            const usuarioEncontrado = usuarios.find(usuario => usuario.user === this.user && usuario.pass === this.pass);
+        this.cargando = true; 
+        this.requestUpdate();
 
-            if(usuarioEncontrado) {
-                console.log('Ha iniciado sesión exitosamente');
-                localStorage.setItem('userId', usuarioEncontrado.userId);
-                this.mostrarInfoUser();
-            } else {
-                this.mensajeError();
-            }
-        })
-        .catch(error => console.log(error))
+        fetch('http://localhost:3000/users')
+            .then(response => response.json())
+            .then(usuarios => {
+                const usuarioEncontrado = usuarios.find(usuario => usuario.user === this.user && usuario.pass === this.pass);
+
+                if (usuarioEncontrado) {
+                    console.log('Ha iniciado sesión exitosamente');
+                    localStorage.setItem('userId', usuarioEncontrado.userId);
+                    this.mostrarInfoUser();
+                } else {
+                    this.mensajeError();
+                }
+            })
+            .catch(error => console.log(error))
+            .finally(() => {
+                this.cargando = false; 
+                this.requestUpdate();
+            });
     }
 
     mostrarInfoUser() {
@@ -119,27 +133,33 @@ export class Login extends LitElement {
         mainContainer.appendChild(infoUserElement);
     }
 
+    escucharSalir() {
+        localStorage.removeItem('userId');
+        window.location.reload();  
+    }
+
     render() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             return html`
-                <info-user></info-user>
+                <info-user @salir="${this.salir}"></info-user>
             `;
         }
+
+        if (this.cargando) {
+            return html`<bbva-spinner></bbva-spinner>`;
+        }
+
         return html`
             <section class="container-login" @submit="${this.enviarFormulario}">
-            <img class="logo" src="./img/bbva-logo.png">
-               <form class="form">
-                   
+                <img class="logo" src="./img/bbva-logo.png">
+                <form class="form">
                     <input type="text" name="user" .value="${this.user}" @input="${this.infoInput}" placeholder="Usuario" required>
-
-                    <input type="password" name="pass" .value="${this.pass}" @input="${this.infoInput}" placeholder="Contaseña" requiered>
-
+                    <input type="password" name="pass" .value="${this.pass}" @input="${this.infoInput}" placeholder="Contaseña" required>
                     <button type="submit"> Ingresar </button>
-               </form>
+                </form>
             </section>
         `;
-
     }
 }
 
