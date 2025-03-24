@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import './spinner.js'; // Importa el componente del spinner
 
 export class BbvaDashboard extends LitElement {
     constructor() {
@@ -8,20 +9,26 @@ export class BbvaDashboard extends LitElement {
         this.tarjetas = [];
         this.tarjetaSeleccionada = null;
         this.mostrarDetalles = false;
+        this.cargando = false; 
     }
 
     static properties = {
-        userId: { type: Number},
-        userName: {type: String},
-        tarjetas: {type: Array}
+        userId: { type: Number },
+        userName: { type: String },
+        tarjetas: { type: Array },
+        cargando: { type: Boolean } 
     };
 
     static styles = css`
         :host {
-            display: block;   
+            display: block;
             width: 100%;
             height: 100%;
             background-color: var(--principalBlue);
+        }
+
+        .txt-center {
+            text-align: center;
         }
 
         .container {
@@ -29,13 +36,15 @@ export class BbvaDashboard extends LitElement {
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-height: 100vh; 
+            min-height: 100vh;
             color: var(--white);
-            padding: 2rem;
-            box-sizing: border-box; 
+            padding: 3rem;
+            box-sizing: border-box;
         }
 
         .tarjeta {
+            height: 10rem;
+            width: 30rem;
             background-color: var(--white);
             padding: 1rem;
             margin: 1rem;
@@ -52,6 +61,26 @@ export class BbvaDashboard extends LitElement {
             padding: 1rem 2rem;
             cursor: pointer;
         }
+
+        .card-icon {
+            height: 7rem;
+            width: 7rem;
+        }
+
+        .data {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .label, .balance {
+            font-size: 1.2rem;
+        }
+
+        .tarjeta:hover {
+            background-color: var(--lightGray);
+            cursor: pointer;
+        }
     `;
 
     async connectedCallback() {
@@ -63,7 +92,7 @@ export class BbvaDashboard extends LitElement {
 
         if (tarjetaGuardada && mostrarDetalles === 'true') {
             this.tarjetaSeleccionada = JSON.parse(tarjetaGuardada);
-            this.mostrarDetalles = true;  
+            this.mostrarDetalles = true;
         }
         await this.obtenerInfoUsuario(userId);
         await this.mostrarTarjeta(userId);
@@ -75,8 +104,8 @@ export class BbvaDashboard extends LitElement {
             const usuarios = await response.json();
             const usuario = usuarios.find(user => user.userId == userId);
             if (usuario) {
-                this.userName = usuario.nombre; 
-                this.requestUpdate(); 
+                this.userName = usuario.nombre;
+                this.requestUpdate();
             }
         } catch (error) {
             console.error(error);
@@ -89,27 +118,37 @@ export class BbvaDashboard extends LitElement {
             const tarjetas = await response.json();
             this.tarjetas = tarjetas;
             console.log(tarjetas);
-            this.requestUpdate(); 
+            this.requestUpdate();
         } catch (error) {
             console.error(error);
         }
     }
 
     async obtenerDetallesTarjeta(tarjeta) {
-        // console.log(tarjeta);
+        this.cargando = true; 
+        this.requestUpdate();
+
+        
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
         this.tarjetaSeleccionada = tarjeta;
         this.mostrarDetalles = true;
+        this.cargando = false; 
         localStorage.setItem('tarjetaSeleccionada', JSON.stringify(tarjeta));
         localStorage.setItem('mostrarDetalles', 'true');
 
         this.requestUpdate();
-        await this.updateComplete;  
-        // console.log(this.mostrarDetalles);
+        await this.updateComplete;
     }
 
-    regresar() {
-       this.mostrarDetalles = false;
+     async regresar() {
+        this.cargando = true; 
+        this.requestUpdate();
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        this.mostrarDetalles = false;
         this.tarjetaSeleccionada = null;
+        this.cargando = false;
         localStorage.removeItem('tarjetaSeleccionada');
         localStorage.removeItem('mostrarDetalles');
         this.requestUpdate();
@@ -125,26 +164,31 @@ export class BbvaDashboard extends LitElement {
         localStorage.removeItem('userId');
         localStorage.removeItem('tarjetaSeleccionada');
         localStorage.removeItem('mostrarDetalles');
-    
+
         const event = new CustomEvent('salir', {
             detail: { message: 'Cerrando sesión' },
             bubbles: true,
             composed: true
         });
         this.dispatchEvent(event);
-        window.location.reload();  
+        window.location.reload();
     }
 
     render() {
-        // Añade los spinners con setTimeOut
+        if (this.cargando) {
+            return html`<bbva-spinner></bbva-spinner>`; 
+        }
+
         if (this.mostrarDetalles && this.tarjetaSeleccionada) {
             return html`
                 <bbva-details 
                     .tarjeta=${this.tarjetaSeleccionada}
+                    .userName="${this.userName}"
                     @regresar="${this.regresar}">
                 </bbva-details>
             `;
         }
+
         return html`
             <section class="icons">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-x-circle-fill" viewBox="0 0 16 16" @click="${this.salir}">
@@ -153,15 +197,24 @@ export class BbvaDashboard extends LitElement {
             </section>
             <section class="container">
                 <h2>Hola, ${this.userName}</h2>
-                    <div class="tarjetas">
-                        <h3>Tarjetas</h3>
-                        ${this.tarjetas.map((tarjeta => html`
-                            <section class="tarjeta" @click="${() => this.obtenerDetallesTarjeta(tarjeta)}"> 
-                                <p> Tarjeta: ${tarjeta.tipo}</p> 
+
+                <div class="tarjetas">
+                    <h3 class="txt-center">Estas son tus cuentas: </h3>
+                    
+                    ${this.tarjetas.map((tarjeta => html`
+                        <section class="tarjeta" @click="${() => this.obtenerDetallesTarjeta(tarjeta)}"> 
+                            <p> Tarjeta: ${tarjeta.tipo}</p>
+                            <section class=data> 
+                                <img class="card-icon" src="./img/card-icon.png">
                                 <p> Número: ${tarjeta.numero} </p>
+                                <div>
+                                    <p class="balance">${tarjeta.saldo.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</p>
+                                    <p class="label">Saldo total</p>
+                                </div>
+                            </section>
                         </section>
-                            `))}
-                    </div>
+                    `))}
+                </div>
             </section>
         `;
     }

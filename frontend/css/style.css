@@ -1,5 +1,5 @@
 :root {
-    --principalBlue: #0033A0;
+    --principalBlue: #062D64;
     --lightBlue: #00A9E0;
     --darkGray: #4D4D4D;
     --lightGray: #E6E6E6;
@@ -24,5 +24,5 @@ html {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    width: min(47rem, 90%);
+    min-width: 47rem;
 }

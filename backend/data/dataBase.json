@@ -5,11 +5,23 @@
             "user": "monse",
             "pass": "msp02$",
             "nombre": "Monserrat Palacios Rodríguez"
+        },
+        {
+            "userId": 2,
+            "user": "jeronimo",
+            "pass": "jro03$",
+            "nombre": "Jeronimo Gonzalez Flores"
+        },
+        {
+            "userId": 3,
+            "user": "aldo",
+            "pass": "al02$",
+            "nombre": "Aldo Aldaco"
         }
     ],
     "tarjetas": [
         {
-            "userId" : 1,
+            "userId": 1,
             "idTarjeta": 1,
             "tipo" : "Débito",
             "numero" : "3152 2897 0987 3456",
@@ -22,7 +34,81 @@
             "userId": 1,
             "idTarjeta": 2,
             "tipo" : "Crédito",
-            "numero" :"3152 2897 0987 4567"
+            "numero" :"3152 2897 0987 4567",
+            "fecha": "12/25",
+            "cvv": "789",
+            "brand": "MasterCard",
+            "saldo": 10000
+        },
+        {
+            "userId": 1,
+            "idTarjeta": 3,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 7894 9867",
+            "fecha": "12/30",
+            "cvv": "456",
+            "brand": "Visa",
+            "saldo": 1000
+        },
+        {
+            "userId": 2,
+            "idTarjeta": 4,
+            "tipo" : "Débito",
+            "numero" : "3152 2897 1234 5678",
+            "fecha": "11/24",
+            "cvv": "234",
+            "brand": "MasterCard",
+            "saldo": 1500
+        },
+        {
+            "userId": 2,
+            "idTarjeta": 5,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 3456 7890",
+            "fecha": "01/26",
+            "cvv": "345",
+            "brand": "Visa",
+            "saldo": 5000
+        },
+        {
+            "userId": 2,
+            "idTarjeta": 6,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 6543 0987",
+            "fecha": "02/27",
+            "cvv": "678",
+            "brand": "MasterCard",
+            "saldo": 2000
+        },
+        {
+            "userId": 3,
+            "idTarjeta": 7,
+            "tipo" : "Débito",
+            "numero" : "3152 2897 8765 4321",
+            "fecha": "09/23",
+            "cvv": "890",
+            "brand": "MasterCard",
+            "saldo": 2500
+        },
+        {
+            "userId": 3,
+            "idTarjeta": 8,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 5678 1234",
+            "fecha": "05/24",
+            "cvv": "987",
+            "brand": "Visa",
+            "saldo": 8000
+        },
+        {
+            "userId": 3,
+            "idTarjeta": 9,
+            "tipo" : "Crédito",
+            "numero" :"3152 2897 2345 6789",
+            "fecha": "07/25",
+            "cvv": "654",
+            "brand": "MasterCard",
+            "saldo": 4000
         }
     ]
 }

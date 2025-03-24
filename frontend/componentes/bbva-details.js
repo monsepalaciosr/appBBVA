@@ -4,10 +4,12 @@ export class BbvaDetails extends LitElement {
     constructor() {
         super();
         this.tarjeta = null;
+        this.userName = null;
         }
     
     static properties = {
-        tarjeta: {type: Object}
+        tarjeta: {type: Object},
+        userName: {type: String}
     };
 
     static styles = css`
@@ -29,16 +31,21 @@ export class BbvaDetails extends LitElement {
             box-sizing: border-box; 
         }
 
+        .card-icon{
+            height: 10rem;
+            width: 10rem;
+        }
+
         .detail {
             display: flex;
             flex-direction: column;
-            align-items: center;
             background-color: var(--white);
             width: 100%;
             min-height: 100vh;
             padding: 5rem;
             box-sizing: border-box;
             color: var(--black); 
+            border-radius:1rem;
         }
 
         .icons {
@@ -48,6 +55,25 @@ export class BbvaDetails extends LitElement {
         .icon {
             padding: 1rem 2rem;
             cursor: pointer;
+        }
+
+        .general{
+            border-bottom:  0.1rem solid var(--lightGray);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h3{
+            font-size: 2rem;
+            font-weight:300;
+        }
+
+        h4{
+            font-size: 1.5rem;
+            font-weight:200;
+        }
+        p{
+            font-size: 1.3rem;
         }
     `;
 
@@ -79,10 +105,25 @@ export class BbvaDetails extends LitElement {
                 </svg>
             </section>
             <section class="container">
-                <h2> Información de tu tarjeta: </h2>
+                <h2> Información de tu tarjeta</h2>
                 <section class="detail">
-                    <h3>Tarjeta: ${this.tarjeta.tipo}</h3> <br>
-                    <p> Número: ${this.tarjeta.numero} </p>
+                    <img class="card-icon" src="./img/card-icon.png">
+                    <section class="general">
+                    <h3>GENERAL</h3>
+                    <h4>Tipo de tarjeta</h4>
+                    <p>${this.tarjeta.tipo}</p>
+                    <h4>Número de tarjeta</h4>
+                    <p>${this.tarjeta.numero} </p>
+                    <h4>Fecha de vencimiento</h4>
+                    <p>${this.tarjeta.fecha}</p>
+                    <h4>CVV</h4>
+                    <p>${this.tarjeta.cvv}</p>
+                </section>
+                <section class="Titular">
+                    <h3>TITULAR</h3>
+                    <h4>Nombre</h4>
+                    <p>${this.userName}</p>
+                </section>
                 </section>
             </section>
         `;
